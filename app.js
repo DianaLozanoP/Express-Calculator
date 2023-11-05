@@ -1,24 +1,33 @@
 //use express
 const express = require('express');
 //call functions for mathematical operations
-const { mean, median, mode } = require('./operations')
 const ExpressError = require('./expressError')
+const { mean, median, mode, checkForNumbers } = require('./operations');
+
 
 //set up app as per express documentation3
 const app = express();
 
 
-app.get('/mean', (req, res) => {
+app.get('/mean', function (req, res, next) {
     try {
         const nums = req.query;
-        let vals = Object.values(nums)
-        let arr = vals.toString().split(',').map(Number);
-        return res.json({
-            response: {
-                "operation": "mean",
-                "value": mean(arr)
-            }
-        });
+        if (Object.keys(nums).length === 0) {
+            throw new ExpressError("nums are required", 400)
+        }
+        if (checkForNumbers(nums)) {
+            let vals = Object.values(nums)
+            let arr = vals.toString().split(',').map(Number);
+            return res.json({
+                response: {
+                    "operation": "mean",
+                    "value": mean(arr)
+                }
+            });
+        }
+        else {
+            throw new ExpressError(checkForNumbers(nums) + 'is not a number', 400)
+        }
     }
     catch (e) {
         next(e);
@@ -26,17 +35,25 @@ app.get('/mean', (req, res) => {
 
 })
 
-app.get('/median', (req, res) => {
+app.get('/median', (req, res, next) => {
     try {
         const nums = req.query;
-        let vals = Object.values(nums)
-        let arr = vals.toString().split(',').map(Number);
-        return res.json({
-            response: {
-                "operation": "median",
-                "value": median(arr)
-            }
-        });
+        if (Object.keys(nums).length === 0) {
+            throw new ExpressError("nums are required", 400)
+        }
+        if (checkForNumbers(nums)) {
+            let vals = Object.values(nums)
+            let arr = vals.toString().split(',').map(Number);
+            return res.json({
+                response: {
+                    "operation": "median",
+                    "value": median(arr)
+                }
+            });
+        }
+        else {
+            throw new ExpressError(checkForNumbers(nums) + 'is not a number', 400)
+        }
     }
     catch (e) {
         next(e);
@@ -44,17 +61,25 @@ app.get('/median', (req, res) => {
 
 })
 
-app.get('/mode', (req, res) => {
+app.get('/mode', function (req, res, next) {
     try {
         const nums = req.query;
-        let vals = Object.values(nums)
-        let arr = vals.toString().split(',').map(Number);
-        return res.json({
-            response: {
-                "operation": "mode",
-                "value": mode(arr)
-            }
-        });
+        if (Object.keys(nums).length === 0) {
+            throw new ExpressError("nums are required", 400)
+        }
+        if (checkForNumbers(nums)) {
+            let vals = Object.values(nums)
+            let arr = vals.toString().split(',').map(Number);
+            return res.json({
+                response: {
+                    "operation": "mode",
+                    "value": mode(arr)
+                }
+            });
+        }
+        else {
+            throw new ExpressError(checkForNumbers(nums) + 'is not a number', 400)
+        }
     }
     catch (e) {
         next(e);
@@ -62,10 +87,13 @@ app.get('/mode', (req, res) => {
 
 })
 
-// // Error handler
+app.use((req, res, next) => {
+    const e = new ExpressError("Page Not Found", 404)
+    next(e)
+})
+
+// Error handler
 app.use(function (err, req, res, next) {
-    //Note the 4 parameters!
-    // the default status is 500 Internal Server Error
     let status = err.status || 500;
     let message = err.msg;
 

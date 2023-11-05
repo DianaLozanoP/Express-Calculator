@@ -30,5 +30,16 @@ function mode(nums) {
     });
     return final;
 }
+function checkForNumbers(obj) {
+    let vals = Object.values(nums)
+    let arr = vals.toString().split(',').map(Number);
+    let b = NaN
+    for (let val in arr) {
+        if (Object.is(val, b)) {
+            return val;
+        }
+        else return true;
+    }
+}
+module.exports = { mean, median, mode, checkForNumbers }
 
-module.exports = { mean, median, mode }
