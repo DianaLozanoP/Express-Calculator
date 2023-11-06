@@ -28,18 +28,22 @@ function mode(nums) {
     let final = Object.keys(count).reduce(function (a, b) {
         return count[a] > count[b] ? a : b
     });
-    return final;
+    return Number(final);
 }
 function checkForNumbers(obj) {
-    let vals = Object.values(nums)
+    let vals = Object.values(obj)
     let arr = vals.toString().split(',').map(Number);
     let b = NaN
-    for (let val in arr) {
+    let final = ''
+    for (let val of arr) {
         if (Object.is(val, b)) {
-            return val;
+            final += val;
         }
-        else return true;
     }
+    if (final.length > 1) {
+        return final
+    }
+    else return 'okay';
 }
 module.exports = { mean, median, mode, checkForNumbers }
 

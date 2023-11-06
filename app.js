@@ -15,7 +15,7 @@ app.get('/mean', function (req, res, next) {
         if (Object.keys(nums).length === 0) {
             throw new ExpressError("nums are required", 400)
         }
-        if (checkForNumbers(nums)) {
+        if (checkForNumbers(nums) == 'okay') {
             let vals = Object.values(nums)
             let arr = vals.toString().split(',').map(Number);
             return res.json({
@@ -41,7 +41,7 @@ app.get('/median', (req, res, next) => {
         if (Object.keys(nums).length === 0) {
             throw new ExpressError("nums are required", 400)
         }
-        if (checkForNumbers(nums)) {
+        if (checkForNumbers(nums) == 'okay') {
             let vals = Object.values(nums)
             let arr = vals.toString().split(',').map(Number);
             return res.json({
@@ -67,7 +67,7 @@ app.get('/mode', function (req, res, next) {
         if (Object.keys(nums).length === 0) {
             throw new ExpressError("nums are required", 400)
         }
-        if (checkForNumbers(nums)) {
+        if (checkForNumbers(nums) == 'okay') {
             let vals = Object.values(nums)
             let arr = vals.toString().split(',').map(Number);
             return res.json({
